@@ -21,6 +21,17 @@ document.querySelector('#paste').addEventListener('click', () => {
     });
 });
 
+/** Read from clipboard when clicking the Paste button */
+document.querySelector('#pastex').addEventListener('click', async () => {
+  const items = await navigator.clipboard.read();
+  console.log("Clipboard content: ", items);
+
+  const textBlob = await items[0].getType("text/plain");
+  const text = await (new Response(textBlob)).text();
+  document.querySelector('#out').value = text;
+  ChromeSamples.log('Text pasted.');
+});
+
 /** Watch for pastes */
 document.addEventListener('paste', e => {
   e.preventDefault();
