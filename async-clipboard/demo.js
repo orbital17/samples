@@ -9,6 +9,20 @@ document.querySelector('#copy').addEventListener('click', () => {
     });
 });
 
+document.querySelector('#copyx').addEventListener('click', async () => {
+  const text = document.querySelector('#out').value;
+
+  const format1 = 'text/plain';
+  const promise_text_blob = Promise.resolve(new Blob([text], {type: format1}));
+
+  const format2 = 'text/html';
+  const promise_html_blob = Promise.resolve(new Blob(["<p>" + text + "</p>"], {type: format1}));
+  const clipboardItemInput = new ClipboardItem(
+    {[format1]: promise_text_blob, [format2]: promise_html_blob, },
+    {presentationStyle: "unspecified"});
+  await navigator.clipboard.write([clipboardItemInput]);
+});
+
 /** Read from clipboard when clicking the Paste button */
 document.querySelector('#paste').addEventListener('click', () => {
   navigator.clipboard.readText()
@@ -24,12 +38,11 @@ document.querySelector('#paste').addEventListener('click', () => {
 /** Read from clipboard when clicking the Paste button */
 document.querySelector('#pastex').addEventListener('click', async () => {
   const items = await navigator.clipboard.read();
-  console.log("Clipboard content: ", items);
 
-  const textBlob = await items[0].getType("text/plain");
+  const textBlob = await items[0].getType("text/html");
   const text = await (new Response(textBlob)).text();
   document.querySelector('#out').value = text;
-  ChromeSamples.log('Text pasted.');
+  ChromeSamples.log('Html pasted.');
 });
 
 /** Watch for pastes */
