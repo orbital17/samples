@@ -16,7 +16,7 @@ document.querySelector('#copyx').addEventListener('click', async () => {
   const promise_text_blob = Promise.resolve(new Blob([text], {type: format1}));
 
   const format2 = 'text/html';
-  const promise_html_blob = Promise.resolve(new Blob(["<p>" + text + "</p>"], {type: format1}));
+  const promise_html_blob = Promise.resolve(new Blob(["<p>" + text + "</p>"], {type: format2}));
   const clipboardItemInput = new ClipboardItem(
     {[format1]: promise_text_blob, [format2]: promise_html_blob, },
     {presentationStyle: "unspecified"});
